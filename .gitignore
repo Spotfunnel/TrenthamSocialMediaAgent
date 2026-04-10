@@ -1,0 +1,91 @@
+# ============================================================
+# Build history / deploy scripts
+# ============================================================
+# All scripts were used to deploy workflows into Mick's n8n cloud.
+# The workflows now live in his n8n instance — no need to ship the code here.
+# Many of these files also contain hardcoded API keys.
+scripts/
+
+# ============================================================
+# Session docs with embedded secrets
+# ============================================================
+docs/handover/2026-04-03-session-handover.md
+docs/plans/2026-04-03-build-session-status.md
+
+# ============================================================
+# Loose temp dumps (workflow exports, execution dumps — contain secrets)
+# ============================================================
+tmp_*.json
+exec*.json
+
+# ============================================================
+# Environment files
+# ============================================================
+.env
+.env.*
+!.env.example
+
+# ============================================================
+# Local tool state
+# ============================================================
+.claude/
+.firecrawl/
+.playwright-mcp/
+
+# ============================================================
+# Dependencies
+# ============================================================
+node_modules/
+**/node_modules/
+package-lock.json
+**/package-lock.json
+
+# ============================================================
+# Preview-site server with hardcoded PAT fallback
+# (scrub before removing from gitignore)
+# ============================================================
+preview-site/server.js
+
+# ============================================================
+# Test data and screenshots
+# ============================================================
+screenshots/
+test_photos/
+data/
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+
+# ============================================================
+# Build artefacts / logs
+# ============================================================
+*.log
+dist/
+build/
+.vercel/
+.next/
+
+# ============================================================
+# OS junk
+# ============================================================
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*~
+
+# ============================================================
+# IDE
+# ============================================================
+.vscode/
+.idea/
+*.sublime-*
+
+# ============================================================
+# Misc binary
+# ============================================================
+*.docx
+*.pdf
+*.zip

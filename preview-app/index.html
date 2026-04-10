@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#fafaf8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0c0c0c" media="(prefers-color-scheme: dark)">
+<title>Post Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=SF+Pro+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f5f0;
+    --bg-subtle: #eeeee8;
+    --card: #ffffff;
+    --card-hover: #fefefe;
+    --border: rgba(0,0,0,0.05);
+    --border-strong: rgba(0,0,0,0.09);
+    --text: #1a1a1a;
+    --text-secondary: #3a3a3a;
+    --muted: #8e8e93;
+    --accent: #7c3aed;
+    --accent-deep: #6d28d9;
+    --accent-glow: rgba(124,58,237,0.12);
+    --accent-soft: rgba(124,58,237,0.06);
+    --fb: #1877F2;
+    --gbp: #4285F4;
+    --ig-grad: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    --shadow-xs: 0 1px 2px rgba(0,0,0,0.03);
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.03);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.04);
+    --shadow-lg: 0 10px 25px -3px rgba(0,0,0,0.06), 0 4px 10px -4px rgba(0,0,0,0.04);
+    --shadow-xl: 0 20px 40px -8px rgba(0,0,0,0.08), 0 8px 16px -6px rgba(0,0,0,0.04);
+    --shadow-card: 0 0 0 1px rgba(0,0,0,0.03), 0 2px 8px rgba(0,0,0,0.04), 0 12px 36px rgba(0,0,0,0.06);
+    --radius: 22px;
+    --radius-md: 16px;
+    --radius-sm: 12px;
+    --radius-xs: 8px;
+    --font: 'DM Sans', -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0c0c0c;
+      --bg-subtle: #141414;
+      --card: #1a1a1c;
+      --card-hover: #1e1e20;
+      --border: rgba(255,255,255,0.06);
+      --border-strong: rgba(255,255,255,0.1);
+      --text: #f5f5f7;
+      --text-secondary: #d1d1d6;
+      --muted: #636366;
+      --accent-glow: rgba(124,58,237,0.18);
+      --accent-soft: rgba(124,58,237,0.1);
+      --shadow-xs: 0 1px 2px rgba(0,0,0,0.15);
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.2), 0 1px 2px rgba(0,0,0,0.15);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.25), 0 2px 4px -2px rgba(0,0,0,0.2);
+      --shadow-lg: 0 10px 25px -3px rgba(0,0,0,0.3), 0 4px 10px -4px rgba(0,0,0,0.2);
+      --shadow-xl: 0 20px 40px -8px rgba(0,0,0,0.4), 0 8px 16px -6px rgba(0,0,0,0.2);
+      --shadow-card: 0 0 0 1px rgba(255,255,255,0.04), 0 2px 8px rgba(0,0,0,0.2), 0 12px 36px rgba(0,0,0,0.25);
+    }
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    padding-bottom: 60px;
+    min-height: 100dvh;
+    overflow-x: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 0 16px;
+    backdrop-filter: saturate(180%) blur(24px);
+    -webkit-backdrop-filter: saturate(180%) blur(24px);
+    background: rgba(245,245,240,0.78);
+    border-bottom: 1px solid var(--border);
+    transition: background 0.3s ease;
+  }
+  @media (prefers-color-scheme: dark) {
+    .header { background: rgba(12,12,12,0.78); }
+  }
+  .header-inner {
+    max-width: 480px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 0;
+  }
+  .logo {
+    width: 40px; height: 40px;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-deep) 100%);
+    border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: -0.5px;
+    box-shadow: 0 2px 10px rgba(124,58,237,0.3), inset 0 1px 0 rgba(255,255,255,0.15);
+    flex-shrink: 0;
+  }
+  .header-text { flex: 1; min-width: 0; }
+  .header-title {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.4px;
+    line-height: 1.2;
+  }
+  .header-sub {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 400;
+    margin-top: 2px;
+    letter-spacing: -0.1px;
+  }
+
+  /* ── Content area ── */
+  .content {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 8px 16px;
+  }
+
+  /* ── Post Card ── */
+  .post-card {
+    margin: 16px 0;
+    background: var(--card);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    opacity: 0;
+    transform: translateY(16px);
+    animation: cardReveal 0.6s var(--ease-out) forwards;
+  }
+  .post-card:nth-child(1) { animation-delay: 0.05s; }
+  .post-card:nth-child(2) { animation-delay: 0.12s; }
+  .post-card:nth-child(3) { animation-delay: 0.19s; }
+
+  @keyframes cardReveal {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .post-label {
+    padding: 18px 20px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .post-label::before {
+    content: '';
+    width: 3px;
+    height: 14px;
+    background: linear-gradient(180deg, var(--accent) 0%, var(--accent-deep) 100%);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  /* ── Platform Tabs ── */
+  .tabs {
+    display: flex;
+    margin: 0 14px 4px;
+    background: var(--bg-subtle);
+    border-radius: var(--radius-sm);
+    padding: 3px;
+    position: relative;
+  }
+  @media (prefers-color-scheme: dark) {
+    .tabs { background: rgba(255,255,255,0.05); }
+  }
+  .tab {
+    flex: 1;
+    padding: 10px 6px;
+    text-align: center;
+    font-size: 12.5px;
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--muted);
+    border-radius: 10px;
+    transition: color 0.2s ease;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    letter-spacing: -0.1px;
+  }
+  .tab.active {
+    color: var(--text);
+    font-weight: 600;
+  }
+  .tab-indicator {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    height: calc(100% - 6px);
+    width: calc(33.333% - 2px);
+    background: var(--card);
+    border-radius: 10px;
+    box-shadow: var(--shadow-sm), 0 0 0 0.5px var(--border);
+    transition: transform 0.35s var(--ease-out);
+    z-index: 0;
+  }
+  .tab-indicator[data-pos="1"] { transform: translateX(calc(100% + 2px)); }
+  .tab-indicator[data-pos="2"] { transform: translateX(calc(200% + 4px)); }
+
+  .tab-icon {
+    width: 14px; height: 14px;
+    display: inline-block;
+    opacity: 0.45;
+    transition: opacity 0.2s ease;
+  }
+  .tab.active .tab-icon { opacity: 0.9; }
+
+  /* ── Panels (swipeable) ── */
+  .panel-wrap {
+    overflow: hidden;
+    touch-action: pan-y;
+  }
+  .panel-track {
+    display: flex;
+    transition: transform 0.4s var(--ease-out);
+    will-change: transform;
+  }
+  .panel {
+    width: 100%;
+    flex-shrink: 0;
+  }
+
+  /* ── Photos ── */
+  img.photo {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    display: block;
+    background: var(--bg-subtle);
+  }
+
+  /* ── Carousel ── */
+  .carousel {
+    position: relative;
+    overflow: hidden;
+    touch-action: pan-y;
+    background: var(--bg-subtle);
+  }
+  .carousel-track {
+    display: flex;
+    transition: transform 0.4s var(--ease-out);
+    will-change: transform;
+  }
+  .carousel-track img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    flex-shrink: 0;
+    display: block;
+  }
+
+  /* Minimal IG-style dots */
+  .carousel-dots {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 5px;
+    align-items: center;
+  }
+  .cdot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.35);
+    transition: all 0.3s var(--ease-out);
+  }
+  .cdot.active {
+    background: white;
+    box-shadow: 0 0 6px rgba(255,255,255,0.4);
+    width: 6px;
+  }
+
+  /* Counter pill */
+  .carousel-n {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: rgba(0,0,0,0.6);
+    color: rgba(255,255,255,0.9);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 12px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    letter-spacing: 0.5px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ══════════════ INSTAGRAM ══════════════ */
+  .ig-head {
+    display: flex;
+    align-items: center;
+    padding: 12px 14px;
+    gap: 10px;
+  }
+  .ig-av {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 12px; font-weight: 700;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .ig-av::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    background: var(--ig-grad);
+    z-index: -1;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    padding: 2px;
+  }
+  .ig-user {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: -0.2px;
+    line-height: 1.2;
+  }
+  .ig-verified {
+    display: inline-flex;
+    width: 12px; height: 12px;
+    margin-left: 3px;
+    vertical-align: -1px;
+  }
+  .ig-loc { font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .ig-dots {
+    margin-left: auto;
+    color: var(--muted);
+    font-size: 16px;
+    letter-spacing: 2px;
+    padding: 4px;
+  }
+
+  .ig-actions {
+    display: flex;
+    padding: 10px 14px 4px;
+    gap: 16px;
+    align-items: center;
+  }
+  .ig-actions svg {
+    width: 24px; height: 24px;
+    stroke-width: 1.7;
+    color: var(--text);
+  }
+  .ig-save { margin-left: auto; }
+
+  .ig-likes {
+    padding: 2px 14px 6px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: -0.1px;
+  }
+
+  .ig-caption {
+    padding: 0 14px 16px;
+    font-size: 13.5px;
+    line-height: 1.5;
+    letter-spacing: -0.1px;
+    color: var(--text);
+  }
+  .ig-caption .u {
+    font-weight: 600;
+    margin-right: 4px;
+  }
+  .ig-caption .hash {
+    color: #00376b;
+    font-size: 13px;
+  }
+  @media (prefers-color-scheme: dark) {
+    .ig-caption .hash { color: #7aafff; }
+  }
+  .ig-caption .more-btn {
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 13px;
+  }
+  .ig-time {
+    padding: 0 14px 14px;
+    font-size: 10.5px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  /* ══════════════ GBP ══════════════ */
+  .gbp-card-inner {
+    margin: 8px 0 0;
+  }
+  .gbp-head {
+    display: flex;
+    align-items: center;
+    padding: 14px 16px;
+    gap: 12px;
+  }
+  .gbp-av {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    background: #f8f9fa;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    border: 1px solid var(--border);
+  }
+  @media (prefers-color-scheme: dark) {
+    .gbp-av { background: #2a2a2e; }
+  }
+  .gbp-av svg { width: 20px; height: 20px; fill: var(--gbp); }
+  .gbp-info { flex: 1; min-width: 0; }
+  .gbp-name {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.2px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    line-height: 1.3;
+  }
+  .gbp-badge {
+    width: 16px; height: 16px;
+    background: var(--gbp);
+    border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .gbp-badge svg { width: 9px; height: 9px; fill: white; }
+  .gbp-date {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .gbp-dots {
+    color: var(--muted);
+    font-size: 16px;
+    letter-spacing: 2px;
+    padding: 4px;
+  }
+
+  .gbp-body {
+    padding: 2px 16px 16px;
+    font-size: 14px;
+    line-height: 1.6;
+    letter-spacing: -0.1px;
+    color: var(--text-secondary);
+  }
+  .gbp-more { color: var(--gbp); cursor: pointer; font-weight: 500; font-size: 13px; }
+
+  .gbp-btn-wrap {
+    padding: 0 16px 16px;
+  }
+  .gbp-learn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--gbp);
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 9px 20px;
+    border-radius: 20px;
+    border: none;
+    letter-spacing: -0.1px;
+  }
+  .gbp-learn svg { width: 14px; height: 14px; fill: white; }
+
+  .gbp-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-top: 1px solid var(--border);
+  }
+  .gbp-footer svg { width: 20px; height: 20px; fill: var(--muted); }
+  .gbp-react-row { display: flex; gap: 20px; }
+
+  /* ══════════════ FACEBOOK ══════════════ */
+  .fb-head {
+    display: flex;
+    align-items: center;
+    padding: 14px 16px;
+    gap: 10px;
+  }
+  .fb-av {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 15px; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .fb-info { flex: 1; min-width: 0; }
+  .fb-name {
+    font-size: 14.5px;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+    line-height: 1.2;
+  }
+  .fb-meta {
+    font-size: 12px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 2px;
+  }
+  .fb-meta svg { width: 12px; height: 12px; fill: var(--muted); }
+  .fb-dots {
+    margin-left: auto;
+    color: var(--muted);
+    font-size: 18px;
+    padding: 4px;
+  }
+
+  .fb-caption {
+    padding: 0 16px 14px;
+    font-size: 14.5px;
+    line-height: 1.5;
+    letter-spacing: -0.1px;
+  }
+
+  .fb-reactions {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 16px;
+    font-size: 14px;
+    color: var(--muted);
+    align-items: center;
+  }
+  .fb-reactions-left {
+    display: flex;
+    gap: 0;
+    align-items: center;
+  }
+  .fb-react-icon {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    margin-right: -4px;
+    border: 2px solid var(--card);
+    position: relative;
+  }
+  .fb-react-icon:nth-child(1) { background: #1877F2; z-index: 3; }
+  .fb-react-icon:nth-child(2) { background: #ED4956; z-index: 2; }
+  .fb-react-count {
+    margin-left: 8px;
+    font-size: 14px;
+  }
+
+  .fb-divider { height: 1px; background: var(--border); margin: 0 16px; }
+
+  .fb-bar {
+    display: flex;
+    padding: 2px 8px;
+  }
+  .fb-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 11px 4px;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--muted);
+    border-radius: var(--radius-xs);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .fb-btn svg { width: 20px; height: 20px; }
+
+  /* ── Footer Note ── */
+  .note {
+    max-width: 480px;
+    margin: 32px auto 0;
+    text-align: center;
+    padding: 0 32px;
+  }
+  .note-inner {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: -0.1px;
+    padding: 10px 18px;
+    background: var(--accent-soft);
+    border-radius: 20px;
+    border: 1px solid var(--border);
+  }
+  .note-inner svg { width: 16px; height: 16px; flex-shrink: 0; opacity: 0.5; }
+
+  /* ── Loading ── */
+  .loading-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 20px;
+    gap: 20px;
+  }
+  .loading-pulse {
+    width: 44px; height: 44px;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-deep) 100%);
+    border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 700; font-size: 19px;
+    animation: pulse 1.8s ease-in-out infinite;
+    box-shadow: 0 2px 16px rgba(124,58,237,0.25);
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(0.92); opacity: 0.7; }
+  }
+  .loading-text {
+    font-size: 14px;
+    color: var(--muted);
+    letter-spacing: -0.2px;
+    font-weight: 500;
+  }
+
+  /* ── Error state ── */
+  .error-screen {
+    text-align: center;
+    padding: 80px 24px;
+    color: var(--muted);
+  }
+  .error-screen p {
+    font-size: 14px;
+    line-height: 1.5;
+    margin-top: 12px;
+  }
+
+  /* ── Utility ── */
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="logo">T</div>
+    <div class="header-text">
+      <div class="header-title">Post Preview</div>
+      <div class="header-sub">Trentham Electrical &amp; Solar</div>
+    </div>
+  </div>
+</div>
+
+<div class="content" id="app">
+  <div class="loading-screen">
+    <div class="loading-pulse">T</div>
+    <div class="loading-text">Loading preview</div>
+  </div>
+</div>
+
+<div class="note">
+  <div class="note-inner">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+    Reply in Telegram to approve or request changes
+  </div>
+</div>
+
+<script>
+async function getData() {
+  const params = new URLSearchParams(location.search);
+  const draftId = params.get('id');
+  if (draftId) {
+    try {
+      const resp = await fetch(`/api/draft?id=${draftId}`);
+      if (resp.ok) return await resp.json();
+    } catch(e) {}
+  }
+
+  if (location.hash.length > 1) {
+    try { return JSON.parse(decodeURIComponent(location.hash.slice(1))); } catch(e) {}
+  }
+
+  if (params.get('data')) {
+    try { return JSON.parse(decodeURIComponent(params.get('data'))); } catch(e) {}
+  }
+
+  return { posts: [{ label: "Demo Post", photos: [],
+    instagram: { caption: "\u2600\ufe0f Another tidy solar install in Daylesford \u2600\ufe0f\n\n10kW system with Fronius inverter and 22 LONGi panels.\n\nThinking about solar? Let\u2019s chat.\n\n\ud83d\udcde 1300 3458 00\n\ud83c\udf10 www.trenthamelectrical.com\n\n#Daylesford #Fronius #LONGi #SolarDoneRight" },
+    gbp: { body: "Another tidy solar install in Daylesford. 10kW system with Fronius inverter and 22 LONGi panels. If you\u2019re thinking about solar, we\u2019d be happy to chat." },
+    facebook: { caption: "\u2600\ufe0f Another tidy solar install in Daylesford \u2600\ufe0f\n\n10kW system with Fronius inverter and 22 LONGi panels.\n\nThinking about solar? Let\u2019s chat.\n\n\ud83d\udcde 1300 3458 00\n\n#Daylesford #Fronius #LONGi #SolarDoneRight" }
+  }]};
+}
+
+const esc = t => {
+  const el = document.createElement('div');
+  el.textContent = t;
+  return el.innerHTML;
+};
+const nl = t => esc(t).replace(/\n/g, '<br>');
+
+function splitHash(c) {
+  const lines = c.split('\n');
+  let m = [], h = [], inHash = false;
+  for (const l of lines) {
+    if (l.trim().startsWith('#') || inHash) { inHash = true; h.push(l); }
+    else m.push(l);
+  }
+  return { t: m.join('\n'), h: h.join(' ') };
+}
+
+function photoHTML(imgs, id) {
+  if (!imgs || imgs.length === 0) return '';
+  if (imgs.length === 1) return `<img class="photo" src="${imgs[0]}" loading="lazy" alt="Post photo">`;
+  return `<div class="carousel" id="c-${id}">
+    <div class="carousel-track">${imgs.map(i => `<img src="${i}" loading="lazy" alt="Post photo">`).join('')}</div>
+    <div class="carousel-n">1/${imgs.length}</div>
+    <div class="carousel-dots">${imgs.map((_, i) => `<div class="cdot${i === 0 ? ' active' : ''}"></div>`).join('')}</div>
+  </div>`;
+}
+
+function igHTML(p, id) {
+  const { t, h } = splitHash(p.instagram?.caption || '');
+  const caption = nl(t);
+  const truncLen = 125;
+  const needsTrunc = t.length > truncLen;
+  return `
+    <div class="ig-head">
+      <div class="ig-av">T</div>
+      <div>
+        <div class="ig-user">trenthamelectrical</div>
+        <div class="ig-loc">Macedon Ranges, Victoria</div>
+      </div>
+      <div class="ig-dots">\u22ef</div>
+    </div>
+    ${photoHTML(p.photos, 'ig' + id)}
+    <div class="ig-actions">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      <svg class="ig-save" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </div>
+    <div class="ig-likes">42 likes</div>
+    <div class="ig-caption"><span class="u">trenthamelectrical</span> ${caption}${h ? '<br><span class="hash">' + nl(h) + '</span>' : ''}</div>
+    <div class="ig-time">2 hours ago</div>`;
+}
+
+function gbpHTML(p, id) {
+  const b = p.gbp?.body || '';
+  const trunc = b.length > 200;
+  const dt = new Date().toLocaleDateString('en-AU', { month: 'short', day: 'numeric', year: 'numeric' });
+  return `
+    <div class="gbp-card-inner">
+      <div class="gbp-head">
+        <div class="gbp-av"><svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg></div>
+        <div class="gbp-info">
+          <div class="gbp-name">Trentham Electrical &amp; Solar <span class="gbp-badge"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></span></div>
+          <div class="gbp-date">${dt}</div>
+        </div>
+        <div class="gbp-dots">\u22ef</div>
+      </div>
+      ${photoHTML(p.photos, 'gbp' + id)}
+      <div class="gbp-body">${nl(trunc ? b.slice(0, 200) + '\u2026' : b)}${trunc ? ' <span class="gbp-more">More</span>' : ''}</div>
+      <div class="gbp-btn-wrap"><button class="gbp-learn"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>Learn more</button></div>
+      <div class="gbp-footer">
+        <div class="gbp-react-row">
+          <svg viewBox="0 0 24 24"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>
+        </div>
+      </div>
+    </div>`;
+}
+
+function fbHTML(p, id) {
+  const c = p.facebook?.caption || p.instagram?.caption || '';
+  const dt = new Date().toLocaleDateString('en-AU', { month: 'short', day: 'numeric' });
+  return `
+    <div class="fb-head">
+      <div class="fb-av">T</div>
+      <div class="fb-info">
+        <div class="fb-name">Trentham Electrical and Solar</div>
+        <div class="fb-meta">${dt} \u00b7 <svg viewBox="0 0 16 16"><path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm4.9 4.4l-1.6 7.4a.6.6 0 0 1-.8.4l-2.3-1.7-1.1 1.1a.4.4 0 0 1-.7-.3l.2-2.6L10.4 5a.2.2 0 0 0-.3-.3L5.5 8.3 3.2 7.6a.4.4 0 0 1 0-.8l9.3-3.6a.5.5 0 0 1 .4.8z"/></svg></div>
+      </div>
+      <div class="fb-dots">\u22ef</div>
+    </div>
+    <div class="fb-caption">${nl(c)}</div>
+    ${photoHTML(p.photos, 'fb' + id)}
+    <div class="fb-reactions">
+      <div class="fb-reactions-left">
+        <div class="fb-react-icon">\ud83d\udc4d</div>
+        <div class="fb-react-icon">\u2764\ufe0f</div>
+        <span class="fb-react-count">42</span>
+      </div>
+      <span>8 comments \u00b7 3 shares</span>
+    </div>
+    <div class="fb-divider"></div>
+    <div class="fb-bar">
+      <div class="fb-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M1 22h3V9H1z"/></svg>Like</div>
+      <div class="fb-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Comment</div>
+      <div class="fb-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>Share</div>
+    </div>`;
+}
+
+function renderPost(p, i) {
+  const igIcon = `<svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="5"/></svg>`;
+  const gbpIcon = `<svg class="tab-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>`;
+  const fbIcon = `<svg class="tab-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>`;
+
+  const photoCount = p.photos?.length || 0;
+  const photoNote = photoCount > 1 ? ` \u00b7 ${photoCount} photos` : '';
+
+  // Only show platforms that have content
+  const hasIG = p.instagram && p.instagram.caption;
+  const hasGBP = p.gbp && p.gbp.body;
+  const hasFB = p.facebook && p.facebook.caption;
+
+  const platforms = [];
+  if (hasIG) platforms.push({ key: 'ig', icon: igIcon, label: 'Instagram', html: igHTML(p, i) });
+  if (hasGBP) platforms.push({ key: 'gbp', icon: gbpIcon, label: 'Google', html: gbpHTML(p, i) });
+  if (hasFB) platforms.push({ key: 'fb', icon: fbIcon, label: 'Facebook', html: fbHTML(p, i) });
+
+  if (platforms.length === 0) platforms.push({ key: 'ig', icon: igIcon, label: 'Instagram', html: '<div style="padding:20px;color:var(--muted)">No content generated</div>' });
+
+  const tabWidth = (100 / platforms.length).toFixed(3);
+
+  return `
+    <div class="post-card">
+      <div class="post-label">${esc(p.label || 'Post ' + (i + 1))}${photoNote}</div>
+      <div class="tabs" data-g="${i}">
+        <div class="tab-indicator" data-pos="0" style="width:calc(${tabWidth}% - 2px)"></div>
+        ${platforms.map((pl, j) => `<div class="tab${j === 0 ? ' active' : ''}" data-p="${pl.key}" onclick="sw(${i},${j})">${pl.icon}${pl.label}</div>`).join('')}
+      </div>
+      <div class="panel-wrap" data-g="${i}">
+        <div class="panel-track">
+          ${platforms.map(pl => `<div class="panel">${pl.html}</div>`).join('')}
+        </div>
+      </div>
+    </div>`;
+}
+
+function sw(g, pos) {
+  const tabs = document.querySelectorAll(`.tabs[data-g="${g}"] .tab`);
+  tabs.forEach((t, i) => t.classList.toggle('active', i === pos));
+
+  document.querySelector(`.tabs[data-g="${g}"] .tab-indicator`).setAttribute('data-pos', pos);
+
+  const track = document.querySelector(`.panel-wrap[data-g="${g}"] .panel-track`);
+  track.style.transform = `translateX(-${pos * 100}%)`;
+
+  // Store current tab for swipe tracking
+  track._cur = pos;
+  initCarousels();
+}
+
+function initPlatformSwipe() {
+  document.querySelectorAll('.panel-wrap').forEach(wrap => {
+    const g = parseInt(wrap.getAttribute('data-g'));
+    const track = wrap.querySelector('.panel-track');
+    track._cur = 0;
+    let sx = 0, sy = 0, df = 0, locked = null;
+
+    wrap.addEventListener('touchstart', e => {
+      sx = e.touches[0].clientX;
+      sy = e.touches[0].clientY;
+      df = 0;
+      locked = null;
+    }, { passive: true });
+
+    wrap.addEventListener('touchmove', e => {
+      const dx = e.touches[0].clientX - sx;
+      const dy = e.touches[0].clientY - sy;
+
+      if (locked === null) {
+        if (Math.abs(dx) > 8 || Math.abs(dy) > 8) {
+          locked = Math.abs(dx) > Math.abs(dy) ? 'h' : 'v';
+        }
+      }
+
+      if (locked !== 'h') return;
+
+      df = dx;
+      track.style.transition = 'none';
+      track.style.transform = `translateX(calc(-${track._cur * 100}% + ${df}px))`;
+    }, { passive: true });
+
+    wrap.addEventListener('touchend', () => {
+      if (locked !== 'h') { df = 0; return; }
+      track.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+      let cur = track._cur;
+      if (Math.abs(df) > 50) {
+        if (df < 0 && cur < 2) cur++;
+        if (df > 0 && cur > 0) cur--;
+      }
+      sw(g, cur);
+      df = 0;
+      locked = null;
+    });
+  });
+}
+
+function initCarousels() {
+  document.querySelectorAll('.carousel').forEach(el => {
+    if (el._init) return;
+    el._init = true;
+    const tr = el.querySelector('.carousel-track');
+    const imgs = tr.querySelectorAll('img');
+    const dots = el.querySelectorAll('.cdot');
+    const cn = el.querySelector('.carousel-n');
+    let cur = 0, sx = 0, sy = 0, df = 0, locked = null;
+
+    function goTo(idx) {
+      cur = Math.max(0, Math.min(imgs.length - 1, idx));
+      tr.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+      tr.style.transform = `translateX(-${cur * 100}%)`;
+      dots.forEach((d, i) => d.classList.toggle('active', i === cur));
+      if (cn) cn.textContent = `${cur + 1}/${imgs.length}`;
+    }
+
+    el.addEventListener('touchstart', e => {
+      sx = e.touches[0].clientX;
+      sy = e.touches[0].clientY;
+      df = 0;
+      locked = null;
+    }, { passive: true });
+
+    el.addEventListener('touchmove', e => {
+      const dx = e.touches[0].clientX - sx;
+      const dy = e.touches[0].clientY - sy;
+      if (locked === null && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) {
+        locked = Math.abs(dx) > Math.abs(dy) ? 'h' : 'v';
+      }
+      if (locked !== 'h') return;
+      df = dx;
+      tr.style.transition = 'none';
+      tr.style.transform = `translateX(calc(-${cur * 100}% + ${df}px))`;
+    }, { passive: true });
+
+    el.addEventListener('touchend', () => {
+      if (locked !== 'h') { df = 0; return; }
+      if (Math.abs(df) > 40) {
+        goTo(df < 0 ? cur + 1 : cur - 1);
+      } else {
+        goTo(cur);
+      }
+      df = 0;
+      locked = null;
+    });
+
+    // Tap left/right to navigate
+    el.addEventListener('click', e => {
+      if (imgs.length <= 1) return;
+      const rect = el.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      goTo(x > rect.width * 0.5 ? cur + 1 : cur - 1);
+    });
+  });
+}
+
+// Init
+(async () => {
+  const d = await getData();
+  const app = document.getElementById('app');
+  if (!d || !d.posts || d.posts.length === 0) {
+    app.innerHTML = '<div class="error-screen"><p>No preview data found.<br>Check the link and try again.</p></div>';
+    return;
+  }
+  app.innerHTML = d.posts.map((p, i) => renderPost(p, i)).join('');
+  initCarousels();
+  initPlatformSwipe();
+})();
+</script>
+</body>
+</html>

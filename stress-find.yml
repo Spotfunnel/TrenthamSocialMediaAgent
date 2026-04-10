@@ -1,0 +1,460 @@
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e5]:
+      - generic [ref=e7]:
+        - generic [ref=e8]:
+          - button "Open menu" [ref=e9] [cursor=pointer]
+          - generic:       
+        - generic [ref=e12]:
+          - generic [ref=e15]: 
+          - generic:
+            - button "Open Story List"
+          - textbox "Search" [ref=e16]
+      - generic [ref=e21]:
+        - generic:
+          - 'link "TrenthamSocialsV2 TrenthamSocialsV2 17:45 Draft created! Platforms: Instagram + Facebook 🌱 A great day out for the Trentham crew at the Trentham Community Garden ☀️ The purple van was parked up and the team ... Preview: https://v2-preview..." [ref=e758] [cursor=pointer]':
+            - /url: "#8684524385"
+            - generic "TrenthamSocialsV2" [ref=e26]:
+              - generic [ref=e28]: T
+            - generic [ref=e29]:
+              - generic [ref=e30]:
+                - button "TrenthamSocialsV2" [ref=e32]
+                - generic [ref=e34]: 17:45
+              - paragraph [ref=e36]:
+                - generic [ref=e37]
+          - link "BotFather BotFather Tue Done! Congratulations on your new bot. You will find it at t.me/TrenthamSocialsV2bot. You can now add a description, about section and profile picture for your bot, see /help for a list of commands. B... Open" [ref=e41] [cursor=pointer]:
+            - /url: "#93372553"
+            - img "BotFather" [ref=e46]
+            - generic [ref=e47]:
+              - generic [ref=e48]:
+                - generic [ref=e49]
+                - generic [ref=e55]: Tue
+              - generic [ref=e56]:
+                - paragraph [ref=e57]
+                - button "Open" [ref=e60]
+          - link "TrenthamSocials TrenthamSocials Tue make it shorter and more casual, mention the purple van arriving" [ref=e62] [cursor=pointer]:
+            - /url: "#8382967898"
+            - generic "TrenthamSocials" [ref=e65]:
+              - generic [ref=e67]: T
+            - generic [ref=e68]:
+              - generic [ref=e69]:
+                - button "TrenthamSocials" [ref=e71]
+                - generic [ref=e72]
+              - paragraph [ref=e79]:
+                - generic [ref=e80]: make it shorter and more casual, mention the purple van arriving
+          - 'link "Telegram Telegram Tue Login code: 74089. Do not give this code to anyone, even if they say they are from Telegram! ❗️ This code can be used to log in to your Telegram account. We never ask it for anything else. If you did..." [ref=e82] [cursor=pointer]':
+            - /url: "#777000"
+            - img "Telegram" [ref=e87]
+            - generic [ref=e88]:
+              - generic [ref=e89]:
+                - generic [ref=e90]
+                - generic [ref=e96]: Tue
+              - paragraph [ref=e98]:
+                - generic [ref=e99]
+      - generic [ref=e102]:
+        - button "New Message" [ref=e103] [cursor=pointer]:
+          - generic [ref=e104]: 
+          - generic [ref=e105]: 
+        - generic:   
+    - generic [ref=e109]:
+      - generic [ref=e110]:
+        - generic [ref=e114] [cursor=pointer]:
+          - generic "TrenthamSocialsV2" [ref=e115]:
+            - generic [ref=e117]: T
+          - generic [ref=e118]:
+            - button "TrenthamSocialsV2" [ref=e120]
+            - generic [ref=e648]: bot
+        - generic [ref=e123]:
+          - button "Search this chat" [ref=e124] [cursor=pointer]:
+            - generic [ref=e125]: 
+          - button "More actions" [ref=e126] [cursor=pointer]:
+            - generic [ref=e127]: 
+      - generic [ref=e130]:
+        - generic [ref=e134]:
+          - generic:
+            - generic: Today
+          - generic [ref=e138]:
+            - generic [ref=e140]:
+              - text: "There was an error creating the blog: the task timed out after 60 seconds. If you want, I can try again."
+              - generic [ref=e142] [cursor=pointer]: 14:49
+            - img [ref=e143]
+            - img "Red Heart" [ref=e149] [cursor=pointer]
+          - generic [ref=e152]:
+            - generic [ref=e154]:
+              - text: Write a blog about solar rebates in Victoria 2026
+              - generic [ref=e155] [cursor=pointer]:
+                - generic [ref=e156]: 14:52
+                - generic [ref=e160]: 
+            - img [ref=e161]
+            - img "Red Heart" [ref=e167] [cursor=pointer]
+          - generic [ref=e170]:
+            - generic [ref=e171]:
+              - generic [ref=e172]:
+                - text: Blog draft created!
+                - text: "Title: Solar rebates in Victoria 2026: what Macedon Ranges homeowners need to know"
+                - text: "Words: ~1161"
+                - text: "Keyword: solar rebates in Victoria 2026"
+                - text: "Preview:"
+                - link "https://preview-site-inky.vercel.app/?id=recIVcMSf20FFTdEa" [ref=e173] [cursor=pointer]:
+                  - /url: https://preview-site-inky.vercel.app/?id=recIVcMSf20FFTdEa
+                - text: "Images: 2 auto-selected"
+                - text: "SEO: Validated"
+                - text: Reply to approve, request changes, or schedule.
+              - generic [ref=e176] [cursor=pointer]:
+                - link "preview-site-inky.vercel.app" [ref=e177]:
+                  - /url: https://preview-site-inky.vercel.app/?id=recIVcMSf20FFTdEa
+                - paragraph [ref=e178]: "Solar rebates in Victoria 2026: what Macedon Ranges homeowners need to know — Preview | Trentham Electrical & Solar"
+                - paragraph [ref=e179]: A clear guide to Victorian solar rebates in 2026, battery support, feed-in tariffs and what Macedon Ranges homeowners should know.
+            - generic [ref=e181] [cursor=pointer]: 14:53
+            - img [ref=e182]
+            - img "Red Heart" [ref=e188] [cursor=pointer]
+          - generic [ref=e191]:
+            - generic [ref=e193]:
+              - text: Post about a 8kW solar install in Daylesford with Fronius inverter and Longi panels. The crew was Sam and Jake, and our purple van was out front
+              - generic [ref=e194] [cursor=pointer]:
+                - generic [ref=e195]: 14:59
+                - generic [ref=e199]: 
+            - img [ref=e200]
+            - img "Red Heart" [ref=e206] [cursor=pointer]
+          - generic [ref=e209]:
+            - generic [ref=e211]:
+              - text: Draft created!
+              - text: "Platforms: Instagram + Facebook + Google Business"
+              - img "🌞" [ref=e212]
+              - text: Another Daylesford install complete!
+              - img "⚡️" [ref=e213]
+              - text: This 8kW solar system is now powering a local home with sleek LONGi panels a...
+              - text: "Preview:"
+              - link "https://v2-preview-app.vercel.app?id=recByGBKMSqND4b1f" [ref=e214] [cursor=pointer]:
+                - /url: https://v2-preview-app.vercel.app?id=recByGBKMSqND4b1f
+              - text: Reply to approve or tell me what to change.
+              - generic [ref=e216] [cursor=pointer]: 14:59
+            - img [ref=e217]
+            - img "Red Heart" [ref=e223] [cursor=pointer]
+          - generic [ref=e226]:
+            - generic [ref=e228]:
+              - text: Do a post about the team end-of-month drinks at the Trentham pub, for Instagram and Facebook only
+              - generic [ref=e229] [cursor=pointer]:
+                - generic [ref=e230]: 15:00
+                - generic [ref=e234]: 
+            - img [ref=e235]
+            - img "Red Heart" [ref=e241] [cursor=pointer]
+          - generic [ref=e244]:
+            - generic [ref=e246]:
+              - text: Draft created!
+              - text: "Platforms: Instagram + Facebook"
+              - img "🍻" [ref=e247]
+              - text: End-of-month drinks, Trentham style
+              - img "💜" [ref=e248]
+              - text: Nothing beats finishing the month with the crew at the local pub. Good food, ...
+              - text: "Preview:"
+              - link "https://v2-preview-app.vercel.app?id=recyc5lGsDTeAn8zf" [ref=e249] [cursor=pointer]:
+                - /url: https://v2-preview-app.vercel.app?id=recyc5lGsDTeAn8zf
+              - text: Reply to approve or tell me what to change.
+              - generic [ref=e251] [cursor=pointer]: 15:01
+            - img [ref=e252]
+            - img "Red Heart" [ref=e258] [cursor=pointer]
+          - generic [ref=e261]:
+            - generic [ref=e262]:
+              - generic [ref=e266] [cursor=pointer]:
+                - paragraph [ref=e267]
+                - generic [ref=e272]: TrenthamSocialsV2
+              - generic [ref=e273]:
+                - text: Make it shorter and add a stronger call to action
+                - generic [ref=e274] [cursor=pointer]
+            - img [ref=e280]
+            - img "Red Heart" [ref=e286] [cursor=pointer]
+          - generic [ref=e289]:
+            - generic [ref=e291]:
+              - text: Caption updated.
+              - text: "IG:"
+              - img "🍻" [ref=e292]
+              - text: End-of-month drinks, Trentham style
+              - img "💜" [ref=e293]
+              - text: Nothing beats finishing the month with the crew at the local pub. Good food, good laughs, and a chance to s...
+              - text: "Preview:"
+              - link "https://v2-preview-app.vercel.app?id=recyc5lGsDTeAn8zf" [ref=e294] [cursor=pointer]:
+                - /url: https://v2-preview-app.vercel.app?id=recyc5lGsDTeAn8zf
+              - text: Reply to approve or request more changes.
+              - generic [ref=e296] [cursor=pointer]: 15:05
+            - img [ref=e297]
+            - img "Red Heart" [ref=e303] [cursor=pointer]
+          - generic [ref=e306]:
+            - generic [ref=e307]:
+              - generic [ref=e311] [cursor=pointer]:
+                - paragraph [ref=e312]
+                - generic [ref=e317]: TrenthamSocialsV2
+              - generic [ref=e318]:
+                - text: Remove GBP
+                - generic [ref=e319] [cursor=pointer]
+            - img [ref=e325]
+            - img "Red Heart" [ref=e331] [cursor=pointer]
+          - generic [ref=e334]:
+            - generic [ref=e336]:
+              - text: Google Business Profile removed from the draft. Preview updated.
+              - text: "Preview:"
+              - link "https://v2-preview-app.vercel.app?id=recByGBKMSqND4b1f" [ref=e337] [cursor=pointer]:
+                - /url: https://v2-preview-app.vercel.app?id=recByGBKMSqND4b1f
+              - generic [ref=e339] [cursor=pointer]: 15:09
+            - img [ref=e340]
+            - img "Red Heart" [ref=e346] [cursor=pointer]
+          - generic [ref=e349]:
+            - generic [ref=e351]:
+              - text: What drafts do I have pending?
+              - generic [ref=e352] [cursor=pointer]:
+                - generic [ref=e353]: 15:10
+                - generic [ref=e357]: 
+            - img [ref=e358]
+            - img "Red Heart" [ref=e364] [cursor=pointer]
+          - generic [ref=e367]:
+            - generic [ref=e369]:
+              - text: "2 drafts found:"
+              - text: "- social: Create a social media post brief for an 8kW solar installati (pending)"
+              - text: "- social: Create a social media post for Instagram and Facebook only. (pending)"
+              - generic [ref=e371] [cursor=pointer]: 15:11
+            - img [ref=e372]
+            - img "Red Heart" [ref=e378] [cursor=pointer]
+          - generic [ref=e381]:
+            - generic [ref=e383]:
+              - text: do a post
+              - generic [ref=e384] [cursor=pointer]:
+                - generic [ref=e385]: 15:11
+                - generic [ref=e389]: 
+            - img [ref=e390]
+            - img "Red Heart" [ref=e396] [cursor=pointer]
+          - generic [ref=e399]:
+            - generic [ref=e401]:
+              - text: What’s the topic or goal for the post?
+              - generic [ref=e403] [cursor=pointer]: 15:11
+            - img [ref=e404]
+            - img "Red Heart" [ref=e410] [cursor=pointer]
+          - generic [ref=e413]:
+            - generic [ref=e415]:
+              - text: hey mate
+              - generic [ref=e416] [cursor=pointer]:
+                - generic [ref=e417]: 15:12
+                - generic [ref=e421]: 
+            - img [ref=e422]
+            - img "Red Heart" [ref=e428] [cursor=pointer]
+          - generic [ref=e431]:
+            - generic [ref=e433]:
+              - text: Hey mate — what do you need?
+              - generic [ref=e435] [cursor=pointer]: 15:12
+            - img [ref=e436]
+            - img "Red Heart" [ref=e442] [cursor=pointer]
+          - generic [ref=e445]:
+            - generic [ref=e447]:
+              - text: Write a blog about heat pump hot water systems and whether they're worth it for homes in the Macedon Ranges
+              - generic [ref=e448] [cursor=pointer]:
+                - generic [ref=e449]: 15:13
+                - generic [ref=e453]: 
+            - img [ref=e454]
+            - img "Red Heart" [ref=e460] [cursor=pointer]
+          - generic [ref=e463]:
+            - generic [ref=e464]:
+              - generic [ref=e465]:
+                - text: Blog draft created!
+                - text: "Title: Are Heat Pump Hot Water Systems Worth It in the Macedon Ranges?"
+                - text: "Words: ~1267"
+                - text: "Keyword: heat pump hot water systems"
+                - text: "Preview:"
+                - link "https://preview-site-inky.vercel.app/?id=recfGecB5VUfYAwUP" [ref=e466] [cursor=pointer]:
+                  - /url: https://preview-site-inky.vercel.app/?id=recfGecB5VUfYAwUP
+                - text: "Images: 2 auto-selected"
+                - text: "SEO: Validated"
+                - text: Reply to approve, request changes, or schedule.
+              - generic [ref=e469] [cursor=pointer]:
+                - link "preview-site-inky.vercel.app" [ref=e470]:
+                  - /url: https://preview-site-inky.vercel.app/?id=recfGecB5VUfYAwUP
+                - paragraph [ref=e471]: Are Heat Pump Hot Water Systems Worth It in the Macedon Ranges? — Preview | Trentham Electrical & Solar
+                - paragraph [ref=e472]: Learn if heat pump hot water systems are worth it for Macedon Ranges homes, including costs, rebates, cold-climate performance and savings.
+            - generic [ref=e474] [cursor=pointer]: 15:14
+            - img [ref=e475]
+            - img "Red Heart" [ref=e481] [cursor=pointer]
+          - generic [ref=e484]:
+            - generic [ref=e486]:
+              - text: Quick post about a switchboard upgrade in Woodend
+              - generic [ref=e487] [cursor=pointer]:
+                - generic [ref=e488]: 15:18
+                - generic [ref=e492]: 
+            - img [ref=e493]
+            - img "Red Heart" [ref=e499] [cursor=pointer]
+          - generic [ref=e502]:
+            - generic [ref=e504]:
+              - text: Draft created!
+              - text: "Platforms: Instagram + Facebook + Google Business"
+              - img "⚡️" [ref=e505]
+              - text: Switchboard Upgrade in Woodend
+              - img "⚡️" [ref=e506]
+              - text: A safe, tidy switchboard makes a big difference. It protects your home, helps ever...
+              - text: "Preview:"
+              - link "https://v2-preview-app.vercel.app?id=recSYWxlB0JND2cWX" [ref=e507] [cursor=pointer]:
+                - /url: https://v2-preview-app.vercel.app?id=recSYWxlB0JND2cWX
+              - text: Reply to approve or tell me what to change.
+              - generic [ref=e509] [cursor=pointer]: 15:18
+            - img [ref=e510]
+            - img "Red Heart" [ref=e516] [cursor=pointer]
+          - generic [ref=e519]:
+            - generic [ref=e521]:
+              - text: Post about a solar install in Trentham
+              - generic [ref=e522] [cursor=pointer]:
+                - generic [ref=e523]: 15:34
+                - generic [ref=e527]: 
+            - img [ref=e528]
+            - img "Red Heart" [ref=e534] [cursor=pointer]
+          - generic [ref=e537]:
+            - generic [ref=e539]:
+              - text: Draft created!
+              - text: "Platforms: Instagram + Facebook + Google Business"
+              - img "☀️" [ref=e540]
+              - text: Another Trentham rooftop powered up right here in town!
+              - img "⚡" [ref=e541]
+              - text: This local home is now running a neat solar system designe...
+              - text: "Preview:"
+              - link "https://v2-preview-app.vercel.app?id=reccCMax7PU5MfTDK" [ref=e542] [cursor=pointer]:
+                - /url: https://v2-preview-app.vercel.app?id=reccCMax7PU5MfTDK
+              - text: Reply to approve or tell me what to change.
+              - generic [ref=e544] [cursor=pointer]: 15:35
+            - img [ref=e545]
+            - img "Red Heart" [ref=e551] [cursor=pointer]
+          - generic [ref=e554]:
+            - generic [ref=e556]:
+              - text: Post about a solar install in Woodend
+              - generic [ref=e557] [cursor=pointer]:
+                - generic [ref=e558]: 15:35
+                - generic [ref=e562]: 
+            - img [ref=e563]
+            - img "Red Heart" [ref=e569] [cursor=pointer]
+          - generic [ref=e572]:
+            - generic [ref=e574]:
+              - text: Draft created!
+              - text: "Platforms: Instagram + Facebook + Google Business"
+              - img "☀️" [ref=e575]
+              - text: Another Woodend rooftop powered up!
+              - img "⚡" [ref=e576]
+              - text: We’ve just completed a neat solar install for a local home in Woodend, helping...
+              - text: "Preview:"
+              - link "https://v2-preview-app.vercel.app?id=recmOIJlPB9aM9EpX" [ref=e577] [cursor=pointer]:
+                - /url: https://v2-preview-app.vercel.app?id=recmOIJlPB9aM9EpX
+              - text: Reply to approve or tell me what to change.
+              - generic [ref=e579] [cursor=pointer]: 15:35
+            - img [ref=e580]
+            - img "Red Heart" [ref=e586] [cursor=pointer]
+          - generic [ref=e589]:
+            - generic [ref=e591]:
+              - text: Post about a solar install in Daylesford
+              - generic [ref=e592] [cursor=pointer]:
+                - generic [ref=e593]: 15:36
+                - generic [ref=e597]: 
+            - img [ref=e598]
+            - img "Red Heart" [ref=e604] [cursor=pointer]
+          - generic [ref=e607]:
+            - generic [ref=e609]:
+              - text: Draft created!
+              - text: "Platforms: Instagram + Facebook + Google Business"
+              - img "☀️" [ref=e610]
+              - text: Another Daylesford rooftop powered up!
+              - img "⚡" [ref=e611]
+              - text: We’ve just completed a neat solar install for a local home in Daylesford, h...
+              - text: "Preview:"
+              - link "https://v2-preview-app.vercel.app?id=recKcG6vOJJcffAT4" [ref=e612] [cursor=pointer]:
+                - /url: https://v2-preview-app.vercel.app?id=recKcG6vOJJcffAT4
+              - text: Reply to approve or tell me what to change.
+              - generic [ref=e614] [cursor=pointer]: 15:36
+            - img [ref=e615]
+            - img "Red Heart" [ref=e621] [cursor=pointer]
+          - generic [ref=e656]:
+            - generic [ref=e658]:
+              - text: Post about a 12kW solar install in Kyneton with Fronius Primo inverter and 28 Canadian Solar panels. Crew was Tom and Sarah, purple van on site all day.
+              - generic [ref=e659] [cursor=pointer]:
+                - generic [ref=e660]: 17:42
+                - generic [ref=e662]
+            - img [ref=e665]
+            - img "Red Heart" [ref=e671] [cursor=pointer]
+          - generic [ref=e677]:
+            - generic [ref=e679]:
+              - text: Draft created!
+              - text: "Platforms: Instagram + Facebook + Google Business"
+              - img "☀️" [ref=e680]
+              - text: Another solid install for Kyneton
+              - img "⚡️" [ref=e681]
+              - text: We spent the day on site with our purple van parked out front and the crew gett...
+              - text: "Preview:"
+              - link "https://v2-preview-app.vercel.app?id=recdqBSPd7d1FDy4r" [ref=e682] [cursor=pointer]:
+                - /url: https://v2-preview-app.vercel.app?id=recdqBSPd7d1FDy4r
+              - text: Reply to approve or tell me what to change.
+              - generic [ref=e684] [cursor=pointer]: 17:43
+            - img [ref=e685]
+            - img "Red Heart" [ref=e691] [cursor=pointer]
+          - generic [ref=e699]:
+            - generic [ref=e701]:
+              - text: Post about a battery storage install in Woodend with Tesla Powerwall 3
+              - generic [ref=e702] [cursor=pointer]:
+                - generic [ref=e703]: 17:44
+                - generic [ref=e705]
+            - img [ref=e708]
+            - img "Red Heart" [ref=e714] [cursor=pointer]
+          - generic [ref=e720]:
+            - generic [ref=e722]:
+              - text: Draft created!
+              - text: "Platforms: Instagram + Facebook + Google Business"
+              - img "🔋" [ref=e723]
+              - text: Tesla Powerwall 3 in Woodend
+              - img "☀️" [ref=e724]
+              - text: Another smart battery install for a local Woodend home — helping the owners store mo...
+              - text: "Preview:"
+              - link "https://v2-preview-app.vercel.app?id=recrriJhhgUqUm5pH" [ref=e725] [cursor=pointer]:
+                - /url: https://v2-preview-app.vercel.app?id=recrriJhhgUqUm5pH
+              - text: Reply to approve or tell me what to change.
+              - generic [ref=e727] [cursor=pointer]: 17:44
+            - img [ref=e728]
+            - img "Red Heart" [ref=e734] [cursor=pointer]
+          - generic [ref=e742]:
+            - generic [ref=e744]:
+              - text: Post about the team volunteer day helping out at the Trentham Community Garden, for Instagram and Facebook only
+              - generic [ref=e745] [cursor=pointer]:
+                - generic [ref=e746]: 17:45
+                - generic [ref=e748]
+            - img [ref=e751]
+            - img "Red Heart" [ref=e757] [cursor=pointer]
+          - generic [ref=e763]:
+            - generic [ref=e765]:
+              - text: Draft created!
+              - text: "Platforms: Instagram + Facebook"
+              - img "🌱" [ref=e766]
+              - text: A great day out for the Trentham crew at the Trentham Community Garden
+              - img "☀️" [ref=e767]
+              - text: The purple van was parked up and the team ...
+              - text: "Preview:"
+              - link "https://v2-preview-app.vercel.app?id=rec5BmzbyZBL2FcZY" [ref=e768] [cursor=pointer]:
+                - /url: https://v2-preview-app.vercel.app?id=rec5BmzbyZBL2FcZY
+              - text: Reply to approve or tell me what to change.
+              - generic [ref=e770] [cursor=pointer]: 17:45
+            - img [ref=e771]
+            - img "Red Heart" [ref=e777] [cursor=pointer]
+        - generic [ref=e622]:
+          - generic:
+            - generic:
+              - button "Go to next unread reactions":
+                - generic: 
+              - generic: 
+            - generic:
+              - button "Go to next mention":
+                - generic: 
+              - generic: 
+            - generic:
+              - button "Go to bottom":
+                - generic: 
+          - generic [ref=e623]:
+            - generic [ref=e624]:
+              - img [ref=e625]
+              - generic [ref=e629]:
+                - button "Choose emoji, sticker or GIF" [ref=e630] [cursor=pointer]
+                - generic [ref=e634]
+                - generic [ref=e636]
+            - button "Record voice message" [ref=e639] [cursor=pointer]:
+              - generic [ref=e640]: 
+              - generic [ref=e641]: 
+              - generic [ref=e642]: 
+              - generic [ref=e643]: 
+  - img

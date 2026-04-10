@@ -1,0 +1,27 @@
+{
+  "results": {
+    "A1": "PASS",
+    "A2": "PASS",
+    "A4": "FAIL (GBP has content)",
+    "A7": "PASS (2 unique)",
+    "A8": "PASS (fallback image)",
+    "B11": "PASS",
+    "B14": "FAIL",
+    "B18": "FAIL",
+    "C19": "PASS",
+    "C20": "PASS",
+    "D25": "PASS (title=True body=True meta=True words=965)",
+    "E30": "PASS",
+    "E32": "PASS (index=3)",
+    "E31": "FAIL",
+    "G39": "PASS",
+    "G41": "PASS",
+    "G42": "PASS"
+  },
+  "issues": [
+    "A4: GBP should be empty when user says IG+FB only",
+    "B14: GBP not removed",
+    "B18: Agent didn't say 'no draft found'. Said: Done \u2014 I\u2019ve shortened the latest draft.",
+    "E31: Crisis pause not respected. Said: Planned this week\u2019s posts."
+  ]
+}
