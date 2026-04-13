@@ -24,8 +24,12 @@ Users interact through Telegram (`@TrenthamSocialsV2bot`) in plain English. No c
 12. [n8n-Specific Traps](#12-n8n-specific-traps)
 13. [Hardcoded Values](#13-hardcoded-values)
 14. [Rules for Future Work](#14-rules-for-future-work)
-15. [Repo Contents](#15-repo-contents)
-16. [Operational Reference](#16-operational-reference)
+15. [Decision History (Why X Over Y)](#15-decision-history)
+16. [Message Lifecycle (Full Execution Flow)](#16-message-lifecycle)
+17. [How to Extend the System](#17-how-to-extend-the-system)
+18. [Testing Evidence and Known Gaps](#18-testing-evidence-and-known-gaps)
+19. [Repo Contents](#19-repo-contents)
+20. [Operational Reference](#20-operational-reference)
 
 ---
 
@@ -477,7 +481,260 @@ The Social Generator uses 50 real past posts as examples, not a detailed style g
 
 ---
 
-## 15. Repo Contents
+## 15. Decision History
+
+Every major design choice had a reason. Another agent touching this system needs to understand not just what was built, but what was tried and rejected.
+
+### Why n8n Cloud Over Railway / Self-Hosted
+
+The client (Mick) wanted a visual workflow builder he could inspect, not a code-deployed backend. n8n's canvas UI lets him see the flow, check execution logs, and understand what the system is doing. Railway would have been faster to build on and cheaper to run, but it would have been a black box to the client. n8n Cloud was chosen over self-hosted n8n because Mick doesn't want to maintain infrastructure.
+
+### Why Buffer Over Meta Graph API
+
+Meta's Graph API requires separate OAuth flows per platform, doesn't support Google Business Profile, and requires an approved Facebook App with Business Verification for publishing. Buffer's API handles IG + FB + GBP from a single API key with a single `createPost` GraphQL mutation. The tradeoff: Buffer doesn't support CTA buttons on GBP posts, and its rate limits are strict (15-min and 24-hour windows at the key level). We accepted both tradeoffs because Buffer cut integration time from weeks to hours.
+
+### Why GPT-5.4-mini Over Claude
+
+The client already had an OpenAI API key and preferred it. When GPT-4o was retired, gpt-5.4-mini was the replacement — 400K context window, $0.20-0.55/month in projected usage at Mick's volume. Claude was considered but would have required a separate API key and billing relationship. The system is model-agnostic in principle (the model name is just a string in the Code nodes), but switching would require editing the `model` field in every GPT call across 7 Code nodes.
+
+### Why Examples Over Prompt Rules for Voice Matching
+
+Both approaches were tested. A 500-line style guide ("be professional, use Australian English, avoid corporate speak, include relevant emojis, use 3-5 hashtags...") produced output that sounded like every other AI-generated social media post — correct but generic. Injecting 50 real posts from Mick's Facebook page as examples (shuffled to avoid recency bias) produced output that matched his actual voice — the sentence structures, the emoji placement, the way he talks about jobs. The `PreparePrompt` node in Social Generator does `slice(0, 50)` on the shuffled Example Bank. Adding more examples or changing voice = update the Airtable table, not the prompt.
+
+### Why No Agent Memory (Buffer Memory Disabled)
+
+n8n's AI Agent supports buffer memory (conversation history). It was enabled early in V2 development. During testing, the agent entered a bad reasoning loop — it hallucinated a tool call, got an error back, and then on every subsequent message, the buffer memory fed the bad reasoning back as context, reinforcing the loop. The agent got stuck repeating the same wrong tool call indefinitely. Clearing the memory fixed it, but the risk of poisoning was too high for a production system where Mick might not notice for days. Memory was disabled. If re-enabled, use a fresh session key per conversation or implement a sliding window that drops old turns.
+
+### Why a Separate Error Workflow
+
+The n8n instance had an existing error workflow ("Steve's Error Reporting") that emailed `steve@...`. Wiring V2 workflows to it would have sent Mick's errors to Steve. A new workflow `SMA - Error Reporting` (`udKAhf29RLRxVd6T`) was created — identical logic but emails `mick@trenthamelectrical.com`. All 17 V2 workflows have `settings.errorWorkflow` set to this ID.
+
+### Why Wix Blog Scheduling is a Custom Cron
+
+Wix Blog v3 API supports `createDraftPost` and `publishDraftPost` but has no `scheduleDraftPost` endpoint. There is no way to tell Wix "publish this at 3pm Thursday." The solution: the Publisher stores `status=scheduled` + `scheduled_publish_date` on the Airtable draft, and a separate hourly cron (`SMA-V2 BlogSchedulePublisher`) checks for due posts and publishes them. This means blog publish times round up to the next hour boundary. The cron interval can be reduced to 15 minutes if more precision is needed.
+
+### Why the Dynamic Self-Updating Scheduler
+
+The weekly planner needs to run at a specific day and time (e.g., Monday 6pm AEST). Hardcoding the cron means editing the workflow if Mick wants to change his posting day. The Scheduler workflow reads `config.post_day` and `config.post_time` on every run. If the config values differ from the current Schedule Trigger settings, it uses the n8n API to `PUT` its own workflow JSON with a new trigger rule. Mick changes `post_day` from "Monday" to "Thursday" in Airtable → next run, the Scheduler rewrites itself → now fires Thursdays. Zero workflow edits.
+
+---
+
+## 16. Message Lifecycle
+
+This is the step-by-step execution flow for every message Mick sends.
+
+### Text Message (No Photos)
+
+```
+TelegramTriggerV2
+  ↓ (raw Telegram Update JSON)
+MediaGroupGate
+  ↓ (checks media_group_id — none for text, passes through)
+SkipGate (IF node)
+  ↓ (no photo → skip photo branch)
+V2 Load Config
+  ↓ (fetches Airtable config row matching incoming chat_id)
+  ↓ (outputs: config object, message_text, chat_id, message_id,
+  ↓  is_reply, reply_to_message_id, has_photo=false, from_name)
+V2 InjectReplyId
+  ↓ (if is_reply, appends [DRAFT_MSG:{reply_to_message_id}] to message_text)
+V2 Agent (LangChain AI Agent)
+  ↓ (reads system prompt + message, picks tool via GPT tool-calling)
+  ↓ (calls one of 9 sub-workflows as toolWorkflow)
+  ↓ (sub-workflow does work, sends Telegram message, returns "DONE")
+V2 Always Reply
+  ↓ (if agent output = "DONE" → skip, tool already replied)
+  ↓ (if agent output is text → send to Telegram as the response)
+  ↓ (if empty → skip)
+```
+
+### Photo Message (Single or Multi-Photo)
+
+```
+TelegramTriggerV2
+  ↓ (Telegram sends one webhook per photo, each with media_group_id)
+MediaGroupGate
+  ↓ (stores photo_file_id to Airtable buffer table, keyed by media_group_id)
+  ↓ (first photo in group: passes through with is_first=true)
+  ↓ (subsequent photos: stored but execution stops — SkipGate catches them)
+SkipGate (IF node)
+  ↓ (is_first=true → continue; is_secondary=true → NoOp, stop)
+PhotoGate (IF node)
+  ↓ (has photo → Wait5s, then ResolvePhotos)
+  ↓ (no photo → V2 Load Config directly)
+Wait5s
+  ↓ (waits 1.5 seconds for remaining media group photos to arrive in buffer)
+ResolvePhotos
+  ↓ (reads all buffered photos for this media_group_id from Airtable)
+  ↓ (downloads each from Telegram API using bot token)
+  ↓ (uploads each to Google Drive via upload-to-drive webhook)
+  ↓ (outputs resolved_image_url: comma-separated Drive URLs)
+  ↓ (clears the buffer)
+V2 Load Config
+  ↓ (same as text flow, but now has resolved_image_url)
+V2 InjectReplyId
+  ↓ (appends [PHOTOS:url1,url2,...] to message text)
+V2 Agent → tool → Always Reply (same as text flow)
+```
+
+### Cron-Triggered (Weekly Planner)
+
+```
+V2ScheduleTrigger (Schedule Trigger node)
+  ↓ (fires on configured day/time — currently weekly)
+V2 Cron Input (Code node)
+  ↓ (reads config, builds a synthetic input matching the agent's expected shape)
+  ↓ (message_text: "plan_weekly_posts", chat_id from config)
+  ↓ (also runs self-update: checks if config.post_day/post_time changed,
+  ↓  PUTs own workflow with new trigger if different)
+V2 Agent → V2 Plan Weekly tool → sends drafts to Telegram
+```
+
+### Key Node Behaviors
+
+**V2 Load Config** — Acts as both config fetcher AND access control. Filters by `{telegram_chat_id}='{chatId}'`. No matching row = `client_not_found`, execution effectively stops. This is why random users who find the bot get silence.
+
+**V2 InjectReplyId** — When Mick replies to a draft message, Telegram includes `reply_to_message.message_id`. This node appends `[DRAFT_MSG:{id}]` to the message text so sub-workflows can find the target draft. This tag must be passed through verbatim by the agent — the system prompt explicitly says `PRESERVE TAGS`.
+
+**V2 Always Reply** — The "catch-all" response node. If a tool sub-workflow already sent a Telegram message (returned "DONE"), this node skips. If the agent produced conversational text (for greetings, questions, capability queries), this node sends it. If the agent produced nothing, this node skips. Response codes: `{sent: true, message_id: N}` (sent conversational reply), `{sent: false, reason: "tool_sent"}` (tool handled it), `{sent: false, reason: "empty"}` (nothing to send).
+
+### Reply Tracking System (How the Bot Knows Which Draft to Edit)
+
+Every time a sub-workflow sends a Telegram message about a draft (creation confirmation, edit confirmation, preview link), it appends the new Telegram `message_id` to the draft's `telegram_message_id` field in Airtable. This field is a comma-separated list of all Telegram messages associated with that draft.
+
+When Mick replies to any of those messages and says "make it shorter", the agent receives `reply_to_message.message_id` from Telegram, which InjectReplyId turns into `[DRAFT_MSG:123]`. EditDraft then searches V2 Drafts for any record where `FIND('123', {telegram_message_id}) > 0` — finding the draft regardless of which specific message in the chain Mick replied to.
+
+### Versioned Revert System
+
+Before every edit, EditDraft saves a snapshot of the current draft state under `versions[replyToMsgId]`:
+- Blog snapshot: `{ content_blog, image_url }`
+- Social snapshot: `{ content_ig, content_fb, content_gbp, image_url, platforms }`
+
+The `versions` field is a JSON object keyed by Telegram message ID. Each key represents "what the draft looked like when this message was the latest." When Mick replies to an older message and says "revert to this version", EditDraft reads `versions[replyToMsgId]` and PATCHes the draft back to that state.
+
+This means Mick can reply to any past draft message in the Telegram thread — even one from 5 edits ago — and revert to the exact state at that point. He doesn't need to "undo" sequentially.
+
+---
+
+## 17. How to Extend the System
+
+### Adding a New Agent Tool
+
+1. **Create a sub-workflow** in n8n with a `Execute Workflow Trigger` node and a Code node
+2. The Code node receives `{ query: "..." }` from the agent — parse with `var input = $input.first().json; var instruction = input.query || '';`
+3. The Code node must return `[{ json: { response: "DONE" } }]` when it sends its own Telegram message, or `[{ json: { response: "some data" } }]` for the agent to relay
+4. **Register it on the agent** — add a `toolWorkflow` node in the main Agent workflow, point it at the sub-workflow, write a `description` that tells the agent when to use it
+5. **Activate the sub-workflow** — inactive workflows fail silently when called via `executeWorkflow`
+6. **Test via the test webhook** — POST to `https://trentham.app.n8n.cloud/webhook/sma-v2-agent` with a Telegram-shaped body
+
+### Deploying a Code Node Change
+
+Workflows live in n8n Cloud. There's no git-based deploy pipeline. Changes are made via the n8n REST API:
+
+```python
+# 1. Fetch current workflow
+GET /api/v1/workflows/{workflowId}
+# 2. Parse JSON, find the target node by name, edit parameters.jsCode
+# 3. PUT the full workflow back
+PUT /api/v1/workflows/{workflowId}
+body: { name, nodes, connections, settings }
+```
+
+**For the main Agent workflow:** PUT without deactivating — deactivating drops the Telegram webhook registration, and re-registering requires re-auth.
+
+**For sub-workflows:** Can safely deactivate → PUT → reactivate if needed.
+
+**Always syntax-check before deploying:**
+```python
+with open("check.js", "w") as f:
+    f.write("(async function(){\n" + code + "\n})();")
+subprocess.run(["node", "-c", "check.js"])
+```
+
+### Adding a Classifier Example
+
+When a user phrasing misroutes (e.g., "swap out body image 1" was classified as `use_from_batch` instead of `replace`), the fix is to add one line to the classifier's user prompt examples:
+
+```
+'"swap out body image 1" with 0 attached → {"operation":"replace","target_index":3,"source":"drive"}'
+```
+
+Then redeploy the EditDraft Code node via the API. Takes 30 seconds.
+
+**Do NOT add a keyword check instead.** See [Section 5](#5-the-classifier-pattern) and [Section 14 Rule 1](#14-rules-for-future-work).
+
+### The `$fromAI` Input Shape
+
+When the agent calls a `toolWorkflow`, the sub-workflow's trigger receives the input wrapped as `{ query: "user's message" }`. Not named parameters, not structured fields. Every sub-workflow must parse from:
+
+```js
+var input = $input.first().json;
+var body = input.body || input;
+var instruction = body.query || body.brief || input.query || input.brief || '';
+```
+
+This triple-fallback pattern exists because the webhook trigger and the executeWorkflow trigger produce slightly different JSON shapes.
+
+### The Ricos Content Format (Wix Blogs)
+
+Wix's blog editor uses Ricos — a rich content JSON format. The blog body in Airtable's `content_blog` field is stored as a JSON string with structure:
+
+```json
+{
+  "title": "...",
+  "body": "## Heading\n\nParagraph text...",
+  "meta_description": "...",
+  "focus_keyword": "...",
+  "tags": ["solar", "energy"],
+  "cover_image_alt": "..."
+}
+```
+
+The Publisher Code node converts the markdown `body` into Ricos nodes (paragraphs, headings, images) for the Wix API. The conversion happens inside the Publisher — generators just write markdown.
+
+---
+
+## 18. Testing Evidence and Known Gaps
+
+### What Was Tested (Automated)
+
+**24-case subset** (fake chat_id, read-only): 24/24 HTTP complete, 30 recent n8n agent executions all success, 0 errors.
+
+**50-case unique edge case run** (real group chat `-5103631480`): 50/50 HTTP complete. 32 workflow successes, 18 OpenAI 429 rate limits (parallel testing artifact, not a production issue). 0 real bugs.
+
+Categories covered: 8 creates (varied angles/constraints), 5 lookups (temporal/status/platform/aggregation filters), 5 drive queries (metadata/filename/cross-folder), 5 schedule parse edge cases (past/invalid/ambiguous), 3 edits without reply context, 4 multi-intent compounds, 5 system/meta introspection, 5 hostile/security (prompt injection/secret extraction/persona attack), 5 format variants (abbreviations/caps/punctuation/French), 3 delete scopes, 2 planner variants.
+
+Full results: `docs/v2-stress-test-50-unique.md` and `docs/v2-stress-test-results.md`
+
+### What Was NOT Tested (Requires Manual Sequencing)
+
+These tests require human-in-the-loop sequencing because they depend on reply context:
+
+| Test | Why Manual |
+|---|---|
+| Create → edit text → edit image → revert chain | Each step requires replying to the previous bot message |
+| Multi-version revert (reply to message from 3 edits ago) | Requires a real conversation thread with multiple bot responses |
+| Buffer delete (remove from schedule) | Was blocked by 24-hour Buffer rate limit during testing |
+| Blog schedule → hourly cron publish → verify on Wix | Requires waiting for the hourly cron to fire |
+| Carousel bulk pick → "use image 3" selection flow | Requires two-turn conversation |
+
+### Known Failure Modes
+
+| Condition | What Happens | Severity |
+|---|---|---|
+| 6+ concurrent agent calls | OpenAI 429 rate limit, workflow returns `{"message":"Error in workflow"}` | Low — only happens in parallel testing, not real usage |
+| Buffer heavy testing | 24-hour key-level rate limit blocks all Buffer operations | Medium — clears after 24 hours |
+| Agent memory poisoning | Agent loops on bad reasoning if buffer memory is enabled | Avoided — memory is disabled |
+| Telegram media group with >10 photos | Untested — buffer table may not collect all before gate releases | Low — Mick rarely sends >5 photos |
+| Drive folder with 0 images | `fetchDriveImage` returns empty string, replace fails gracefully with "Could not find a replacement" message | Low |
+
+### Error Monitoring
+
+All 17 V2 workflows are wired to `SMA - Error Reporting` (`udKAhf29RLRxVd6T`). Any workflow error triggers an email to `mick@trenthamelectrical.com` with the error details and workflow name. Verified via n8n API that all 17 have `settings.errorWorkflow` = `udKAhf29RLRxVd6T`.
+
+---
+
+## 19. Repo Contents
 
 | Path | What's in it |
 |---|---|
@@ -500,7 +757,7 @@ The Social Generator uses 50 real past posts as examples, not a detailed style g
 
 ---
 
-## 16. Operational Reference
+## 20. Operational Reference
 
 For quick-reference IDs, deploy patterns, and n8n conventions, see `CLAUDE.md`. It is auto-loaded by Claude Code at session start.
 
